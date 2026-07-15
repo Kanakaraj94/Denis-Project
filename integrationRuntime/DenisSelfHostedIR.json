@@ -1,0 +1,6 @@
+{
+	"name": "DenisSelfHostedIR",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}

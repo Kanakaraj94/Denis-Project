@@ -1,0 +1,22 @@
+{
+	"name": "Mongo2Adf_ls",
+	"properties": {
+		"annotations": [],
+		"type": "MongoDbV2",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "AzureKeyVault",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "mongoConnString"
+			},
+			"database": "denis_db"
+		},
+		"connectVia": {
+			"referenceName": "DenisSelfHostedIR",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

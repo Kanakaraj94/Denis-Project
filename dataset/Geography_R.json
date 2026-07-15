@@ -1,0 +1,15 @@
+{
+	"name": "Geography_R",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Mongo2Adf_ls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "MongoDbV2Collection",
+		"schema": [],
+		"typeProperties": {
+			"collection": "Geography"
+		}
+	}
+}
