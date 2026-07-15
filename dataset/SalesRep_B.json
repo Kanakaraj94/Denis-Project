@@ -1,5 +1,5 @@
 {
-	"name": "Product_B",
+	"name": "SalesRep_B",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Adls2Adf_ls",
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "`product`.csv",
+				"fileName": "SalesRep.csv",
 				"folderPath": "medallion/Bronze",
 				"fileSystem": "denis"
 			},
@@ -19,6 +19,15 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "SalesRepID",
+				"type": "String"
+			},
+			{
+				"name": "Sales Rep Name",
+				"type": "String"
+			}
+		]
 	}
 }

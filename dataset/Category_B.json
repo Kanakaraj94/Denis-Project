@@ -1,24 +1,28 @@
 {
-	"name": "Product_B",
+	"name": "Category_B",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Adls2Adf_ls",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
-		"type": "DelimitedText",
+		"type": "Excel",
 		"typeProperties": {
+			"sheetName": "Categories",
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "`product`.csv",
+				"fileName": "Categories.xlsx",
 				"folderPath": "medallion/Bronze",
 				"fileSystem": "denis"
-			},
-			"columnDelimiter": ",",
-			"escapeChar": "\\",
-			"firstRowAsHeader": true,
-			"quoteChar": "\""
+			}
 		},
-		"schema": []
+		"schema": [
+			{
+				"type": "String"
+			},
+			{
+				"type": "String"
+			}
+		]
 	}
 }

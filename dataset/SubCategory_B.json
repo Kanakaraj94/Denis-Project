@@ -1,5 +1,5 @@
 {
-	"name": "Product_B",
+	"name": "SubCategory_B",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Adls2Adf_ls",
@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "`product`.csv",
+				"fileName": "SubCategories.csv",
 				"folderPath": "medallion/Bronze",
 				"fileSystem": "denis"
 			},
@@ -19,6 +19,19 @@
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
 		},
-		"schema": []
+		"schema": [
+			{
+				"name": "SubCategoryKey",
+				"type": "String"
+			},
+			{
+				"name": "CategoryKey",
+				"type": "String"
+			},
+			{
+				"name": "SubCategory Name",
+				"type": "String"
+			}
+		]
 	}
 }

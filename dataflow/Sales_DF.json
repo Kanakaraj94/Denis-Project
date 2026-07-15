@@ -1,0 +1,73 @@
+{
+	"name": "Sales_DF",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "AdlsFactFiles_B",
+						"type": "DatasetReference"
+					},
+					"name": "AllSalesBronze"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Sales_S",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "selectedColumns"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          fSalesPrimaryKey as integer,",
+				"          ProductID as short,",
+				"          SalesRepID as short,",
+				"          Location as string,",
+				"          Date as string,",
+				"          Units as short,",
+				"          PercentOfStandardCost as double,",
+				"          RevenueDiscount as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> AllSalesBronze",
+				"AllSalesBronze derive(Country = split(Location,';')[1],",
+				"          Town = split(Location, ';')[2],",
+				"          Date = toDate(Date, 'dd.MM.yyyy')) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          fSalesPrimaryKey,",
+				"          ProductID,",
+				"          SalesRepID,",
+				"          Country,",
+				"          Town,",
+				"          Date,",
+				"          Units,",
+				"          PercentOfStandardCost,",
+				"          RevenueDiscount",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectedColumns",
+				"selectedColumns sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}
