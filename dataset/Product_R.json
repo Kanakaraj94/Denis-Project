@@ -1,0 +1,15 @@
+{
+	"name": "Product_R",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "MySql2Adf_ls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "MySqlTable",
+		"schema": [],
+		"typeProperties": {
+			"tableName": "`product`"
+		}
+	}
+}

@@ -1,0 +1,23 @@
+{
+	"name": "AdlsFactFiles_B",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Adls2Adf_ls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "medallion/Bronze/Sales",
+				"fileSystem": "denis"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
