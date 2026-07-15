@@ -108,6 +108,24 @@
 					},
 					"Mongo2Adf_ls_properties_typeProperties_database": {
 						"value": "[parameters('Mongo2Adf_ls_properties_typeProperties_database')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "denisProjectDF_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
 					},
 					"MySql2Adf_ls_properties_typeProperties_server": {
 						"value": "[parameters('MySql2Adf_ls_properties_typeProperties_server')]"
@@ -120,7 +138,9 @@
 					}
 				}
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'denisProjectDF_ArmTemplate_0')]"
+			]
 		}
 	]
 }
