@@ -1,5 +1,5 @@
 {
-	"name": "Product_B",
+	"name": "SalesRep_S",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Adls2Adf_ls",
@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "`product`.csv",
-				"folderPath": "medallion/Bronze",
+				"fileName": "Sales.csv",
+				"folderPath": "medallion/Silver",
 				"fileSystem": "denis"
 			},
 			"columnDelimiter": ",",

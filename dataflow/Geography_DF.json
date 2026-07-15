@@ -1,0 +1,73 @@
+{
+	"name": "Geography_DF",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Geography_B",
+						"type": "DatasetReference"
+					},
+					"name": "GeographyBronze"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Geography_S",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
+			"transformations": [
+				{
+					"name": "selectedColumns"
+				},
+				{
+					"name": "AddingSurrogateKey"
+				},
+				{
+					"name": "selectedColumns1"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          Country as string,",
+				"          Town as string,",
+				"          Wikipedia as string,",
+				"          {_id} as ({$oid} as string)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false,",
+				"     documentForm: 'documentPerLine') ~> GeographyBronze",
+				"GeographyBronze select(mapColumn(",
+				"          Country,",
+				"          Town",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectedColumns",
+				"selectedColumns keyGenerate(output(GeoKey as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> AddingSurrogateKey",
+				"AddingSurrogateKey select(mapColumn(",
+				"          GeoKey,",
+				"          Country,",
+				"          Town",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> selectedColumns1",
+				"selectedColumns1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1"
+			]
+		}
+	}
+}
