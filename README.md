@@ -53,7 +53,6 @@
 - MySQL Database
 - MongoDB
 - Azure Key Vault
-- Execute Pipeline Activity
 
 ---
 
@@ -118,14 +117,15 @@ Output:
 # Azure SQL Database
 
 Normalized Tables:
-- Customer
+- Categories
 - Product
-- Orders
+- SubCategories
 - Sales
-- (Other Silver datasets)
+- Geography
+- SalesRep
 
 Denormalized Tables:
-- Gold analytical table
+- Gold analytical table (Denis_G_Tb)
 
 Analytical Metrics:
 - Total Revenue
@@ -144,6 +144,7 @@ Analytical Metrics:
 - Integration Runtime
 - Copy Activities
 - Sink Transformations
+- Execute Pipeline Activity
 
 ---
 
