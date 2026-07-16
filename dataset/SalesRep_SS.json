@@ -1,0 +1,16 @@
+{
+	"name": "SalesRep_SS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Adf2AzSQL_ls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "",
+			"table": "SalesRep_Norm_Tb"
+		}
+	}
+}

@@ -1,0 +1,16 @@
+{
+	"name": "Category_SS",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Adf2AzSQL_ls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "",
+			"table": "Category_Norm_Tb"
+		}
+	}
+}
