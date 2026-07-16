@@ -252,7 +252,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "Category.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -306,7 +305,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "Geography.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -364,7 +362,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "Product.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -431,7 +428,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "Sales.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -460,7 +456,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "Sales.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},

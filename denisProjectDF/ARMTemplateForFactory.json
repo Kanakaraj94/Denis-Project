@@ -241,7 +241,8 @@
 								"parameters": {},
 								"datasetParameters": {
 									"SalesRepBronzeData": {},
-									"sink1": {}
+									"sink1": {},
+									"sink2": {}
 								}
 							},
 							"staging": {},
@@ -271,7 +272,8 @@
 								"parameters": {},
 								"datasetParameters": {
 									"ProductBronze": {},
-									"sink2": {}
+									"sink2": {},
+									"sink3": {}
 								}
 							},
 							"staging": {},
@@ -301,7 +303,8 @@
 								"parameters": {},
 								"datasetParameters": {
 									"CategoryBronze": {},
-									"sink1": {}
+									"sink1": {},
+									"sink2": {}
 								}
 							},
 							"staging": {},
@@ -331,7 +334,8 @@
 								"parameters": {},
 								"datasetParameters": {
 									"GeographyBronze": {},
-									"sink1": {}
+									"sink1": {},
+									"sink2": {}
 								}
 							},
 							"staging": {},
@@ -361,7 +365,8 @@
 								"parameters": {},
 								"datasetParameters": {
 									"SubCategoryBronze": {},
-									"sink1": {}
+									"sink1": {},
+									"sink2": {}
 								}
 							},
 							"staging": {},
@@ -422,7 +427,8 @@
 								"parameters": {},
 								"datasetParameters": {
 									"AllSalesBronze": {},
-									"sink1": {}
+									"sink1": {},
+									"sink2": {}
 								}
 							},
 							"staging": {},
@@ -864,7 +870,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "Category.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -877,6 +882,27 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Adls2Adf_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Category_SS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Adf2AzSQL_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "",
+					"table": "Category_Norm_Tb"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Adf2AzSQL_ls')]"
 			]
 		},
 		{
@@ -938,7 +964,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "Geography.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -951,6 +976,27 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Adls2Adf_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Geography_SS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Adf2AzSQL_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "",
+					"table": "Geography_Norm_Tb"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Adf2AzSQL_ls')]"
 			]
 		},
 		{
@@ -1016,7 +1062,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "Product.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -1029,6 +1074,27 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Adls2Adf_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Product_SS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Adf2AzSQL_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "",
+					"table": "Product_Norm_Tb"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Adf2AzSQL_ls')]"
 			]
 		},
 		{
@@ -1083,7 +1149,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "Sales.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -1096,6 +1161,27 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Adls2Adf_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SalesRep_SS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Adf2AzSQL_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "",
+					"table": "SalesRep_Norm_Tb"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Adf2AzSQL_ls')]"
 			]
 		},
 		{
@@ -1112,7 +1198,6 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "Sales.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -1125,6 +1210,27 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Adls2Adf_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Sales_SS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Adf2AzSQL_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "",
+					"table": "Sales_Norm_Tb"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Adf2AzSQL_ls')]"
 			]
 		},
 		{
@@ -1196,6 +1302,27 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Adls2Adf_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SubCategory_SS')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Adf2AzSQL_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "",
+					"table": "SubCategory_Norm_Tb"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Adf2AzSQL_ls')]"
 			]
 		},
 		{
@@ -1373,6 +1500,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "Category_SS",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
 						}
 					],
 					"transformations": [],
@@ -1386,18 +1520,30 @@
 						"     ignoreNoFilesFound: false) ~> CategoryBronze",
 						"CategoryBronze sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     filePattern:'Category_S.csv',",
 						"     umask: 0022,",
 						"     preCommands: [],",
 						"     postCommands: [],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink1"
+						"     partitionBy('hash', 1)) ~> sink1",
+						"CategoryBronze sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Category_B')]",
-				"[concat(variables('factoryId'), '/datasets/Category_S')]"
+				"[concat(variables('factoryId'), '/datasets/Category_S')]",
+				"[concat(variables('factoryId'), '/datasets/Category_SS')]"
 			]
 		},
 		{
@@ -1423,6 +1569,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "Geography_SS",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
 						}
 					],
 					"transformations": [
@@ -1465,18 +1618,30 @@
 						"     skipDuplicateMapOutputs: true) ~> selectedColumns1",
 						"selectedColumns1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     filePattern:'Geography_S.csv',",
 						"     umask: 0022,",
 						"     preCommands: [],",
 						"     postCommands: [],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink1"
+						"     partitionBy('hash', 1)) ~> sink1",
+						"selectedColumns1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Geography_B')]",
-				"[concat(variables('factoryId'), '/datasets/Geography_S')]"
+				"[concat(variables('factoryId'), '/datasets/Geography_S')]",
+				"[concat(variables('factoryId'), '/datasets/Geography_SS')]"
 			]
 		},
 		{
@@ -1502,6 +1667,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "sink2"
+						},
+						{
+							"dataset": {
+								"referenceName": "Product_SS",
+								"type": "DatasetReference"
+							},
+							"name": "sink3"
 						}
 					],
 					"transformations": [
@@ -1543,18 +1715,30 @@
 						"     skipDuplicateMapOutputs: true) ~> selectedClms",
 						"selectedClms sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     filePattern:'Product_S.csv',",
 						"     umask: 0022,",
 						"     preCommands: [],",
 						"     postCommands: [],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink2"
+						"     partitionBy('hash', 1)) ~> sink2",
+						"selectedClms sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink3"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/Product_B')]",
-				"[concat(variables('factoryId'), '/datasets/Product_S')]"
+				"[concat(variables('factoryId'), '/datasets/Product_S')]",
+				"[concat(variables('factoryId'), '/datasets/Product_SS')]"
 			]
 		},
 		{
@@ -1580,6 +1764,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "SalesRep_SS",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
 						}
 					],
 					"transformations": [
@@ -1607,18 +1798,30 @@
 						"     skipDuplicateMapOutputs: true) ~> selectedColumns",
 						"selectedColumns sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     filePattern:'SalesRep_S.csv',",
 						"     umask: 0022,",
 						"     preCommands: [],",
 						"     postCommands: [],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink1"
+						"     partitionBy('hash', 1)) ~> sink1",
+						"selectedColumns sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SalesRep_B')]",
-				"[concat(variables('factoryId'), '/datasets/SalesRep_S')]"
+				"[concat(variables('factoryId'), '/datasets/SalesRep_S')]",
+				"[concat(variables('factoryId'), '/datasets/SalesRep_SS')]"
 			]
 		},
 		{
@@ -1644,6 +1847,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "Sales_SS",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
 						}
 					],
 					"transformations": [
@@ -1686,18 +1896,30 @@
 						"     skipDuplicateMapOutputs: true) ~> selectedColumns",
 						"selectedColumns sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     filePattern:'Sales_S.csv',",
 						"     umask: 0022,",
 						"     preCommands: [],",
 						"     postCommands: [],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink1"
+						"     partitionBy('hash', 1)) ~> sink1",
+						"selectedColumns sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/AdlsFactFiles_B')]",
-				"[concat(variables('factoryId'), '/datasets/Sales_S')]"
+				"[concat(variables('factoryId'), '/datasets/Sales_S')]",
+				"[concat(variables('factoryId'), '/datasets/Sales_SS')]"
 			]
 		},
 		{
@@ -1723,6 +1945,13 @@
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "SubCategory_SS",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
 						}
 					],
 					"transformations": [
@@ -1742,18 +1971,30 @@
 						"SubCategoryBronze derive(CategoryKey = regexReplace(CategoryKey, '[^0-9]', '')) ~> derivedColumn1",
 						"derivedColumn1 sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
+						"     filePattern:'SubCategory_S.csv',",
 						"     umask: 0022,",
 						"     preCommands: [],",
 						"     postCommands: [],",
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
-						"     partitionBy('hash', 1)) ~> sink1"
+						"     partitionBy('hash', 1)) ~> sink1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
 					]
 				}
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SubCategory_B')]",
-				"[concat(variables('factoryId'), '/datasets/SubCategory_S')]"
+				"[concat(variables('factoryId'), '/datasets/SubCategory_S')]",
+				"[concat(variables('factoryId'), '/datasets/SubCategory_SS')]"
 			]
 		}
 	]
