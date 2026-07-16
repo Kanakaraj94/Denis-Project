@@ -51,6 +51,9 @@
 - GitHub
 - Azure Mapping Data Flow
 - SQL
+- MongoDB
+- Azure Key Vault
+- Execute Pipeline Activity
 
 ---
 
