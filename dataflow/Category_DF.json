@@ -32,6 +32,7 @@
 				"     ignoreNoFilesFound: false) ~> CategoryBronze",
 				"CategoryBronze sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     filePattern:'Category_S',",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",

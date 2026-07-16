@@ -38,6 +38,7 @@
 				"SubCategoryBronze derive(CategoryKey = regexReplace(CategoryKey, '[^0-9]', '')) ~> derivedColumn1",
 				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     filePattern:'SubCategory_S',",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",

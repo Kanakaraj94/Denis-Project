@@ -46,6 +46,7 @@
 				"     skipDuplicateMapOutputs: true) ~> selectedColumns",
 				"selectedColumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     filePattern:'SalesRep_S',",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",

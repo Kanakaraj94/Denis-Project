@@ -61,6 +61,7 @@
 				"     skipDuplicateMapOutputs: true) ~> selectedColumns1",
 				"selectedColumns1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     filePattern:'Geography_S',",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",

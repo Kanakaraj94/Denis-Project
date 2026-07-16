@@ -60,6 +60,7 @@
 				"     skipDuplicateMapOutputs: true) ~> selectedClms",
 				"selectedClms sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
+				"     filePattern:'Product_S',",
 				"     umask: 0022,",
 				"     preCommands: [],",
 				"     postCommands: [],",
