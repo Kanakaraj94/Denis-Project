@@ -1,0 +1,16 @@
+{
+	"name": "CountrySummary",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Adf2AzSQL_ls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [],
+		"typeProperties": {
+			"schema": "",
+			"table": "CountrySummary_Tb"
+		}
+	}
+}

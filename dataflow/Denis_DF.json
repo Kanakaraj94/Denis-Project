@@ -1,0 +1,344 @@
+{
+	"name": "Denis_DF",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "Category_S",
+						"type": "DatasetReference"
+					},
+					"name": "CategoryData"
+				},
+				{
+					"dataset": {
+						"referenceName": "SubCategory_S",
+						"type": "DatasetReference"
+					},
+					"name": "SubCategoryData"
+				},
+				{
+					"dataset": {
+						"referenceName": "Product_S",
+						"type": "DatasetReference"
+					},
+					"name": "ProductData"
+				},
+				{
+					"dataset": {
+						"referenceName": "SalesRep_S",
+						"type": "DatasetReference"
+					},
+					"name": "SalesRepData"
+				},
+				{
+					"dataset": {
+						"referenceName": "Sales_S",
+						"type": "DatasetReference"
+					},
+					"name": "SalesData"
+				},
+				{
+					"dataset": {
+						"referenceName": "Geography_S",
+						"type": "DatasetReference"
+					},
+					"name": "GeographyData"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Denis_G",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				},
+				{
+					"dataset": {
+						"referenceName": "Denis_GG",
+						"type": "DatasetReference"
+					},
+					"name": "sink2"
+				},
+				{
+					"dataset": {
+						"referenceName": "SalesRepSummary",
+						"type": "DatasetReference"
+					},
+					"name": "sink3"
+				},
+				{
+					"dataset": {
+						"referenceName": "ProductSummary",
+						"type": "DatasetReference"
+					},
+					"name": "sink4"
+				},
+				{
+					"dataset": {
+						"referenceName": "CountrySummary",
+						"type": "DatasetReference"
+					},
+					"name": "sink5"
+				},
+				{
+					"dataset": {
+						"referenceName": "AvgSalesPerDay",
+						"type": "DatasetReference"
+					},
+					"name": "sink6"
+				}
+			],
+			"transformations": [
+				{
+					"name": "CategorySubCatJoin"
+				},
+				{
+					"name": "CatSubCatReqClms"
+				},
+				{
+					"name": "CatSubCatProduct"
+				},
+				{
+					"name": "CatSubCatPrdReqCol"
+				},
+				{
+					"name": "SalesSalesRepJoin"
+				},
+				{
+					"name": "SalesSalesRepCol"
+				},
+				{
+					"name": "FinalJoin"
+				},
+				{
+					"name": "FinalRequiredCol"
+				},
+				{
+					"name": "CalcTotalRevenueTotalCost"
+				},
+				{
+					"name": "CalcGrossProfit"
+				},
+				{
+					"name": "SalesRepSummary"
+				},
+				{
+					"name": "ProductSummary"
+				},
+				{
+					"name": "CountryWiseSummary"
+				},
+				{
+					"name": "AvgSalesPerDay"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          CategoryKey as short,",
+				"          Category as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> CategoryData",
+				"source(output(",
+				"          SubCategoryKey as short,",
+				"          CategoryKey as short,",
+				"          {SubCategory Name} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> SubCategoryData",
+				"source(output(",
+				"          ProductID as short,",
+				"          SubCategoryKey as short,",
+				"          Color as string,",
+				"          ProductName as string,",
+				"          RetailPrice as double,",
+				"          StandardCost as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> ProductData",
+				"source(output(",
+				"          SalesRepID as short,",
+				"          SalesRepName as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> SalesRepData",
+				"source(output(",
+				"          fSalesPrimaryKey as integer,",
+				"          ProductID as short,",
+				"          SalesRepID as short,",
+				"          Country as string,",
+				"          Town as string,",
+				"          Date as date,",
+				"          Units as short,",
+				"          PercentOfStandardCost as double,",
+				"          RevenueDiscount as double",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> SalesData",
+				"source(output(",
+				"          GeoKey as short,",
+				"          Country as string,",
+				"          Town as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> GeographyData",
+				"CategoryData, SubCategoryData join(CategoryData@CategoryKey == SubCategoryData@CategoryKey,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> CategorySubCatJoin",
+				"CategorySubCatJoin select(mapColumn(",
+				"          SubCategoryKey,",
+				"          Category,",
+				"          SubCategoryName = {SubCategory Name}",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> CatSubCatReqClms",
+				"CatSubCatReqClms, ProductData join(CatSubCatReqClms@SubCategoryKey == ProductData@SubCategoryKey,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> CatSubCatProduct",
+				"CatSubCatProduct select(mapColumn(",
+				"          ProductID,",
+				"          Category,",
+				"          {SubCategory Name} = SubCategoryName,",
+				"          Color,",
+				"          ProductName,",
+				"          RetailPrice,",
+				"          StandardCost",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> CatSubCatPrdReqCol",
+				"SalesRepData, SalesData join(SalesRepData@SalesRepID == SalesData@SalesRepID,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> SalesSalesRepJoin",
+				"SalesSalesRepJoin select(mapColumn(",
+				"          fSalesPrimaryKey,",
+				"          ProductID,",
+				"          SalesRepID = SalesData@SalesRepID,",
+				"          SalesRepName,",
+				"          Country,",
+				"          Town,",
+				"          Date,",
+				"          Units,",
+				"          PercentOfStandardCost,",
+				"          RevenueDiscount",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SalesSalesRepCol",
+				"CatSubCatPrdReqCol, SalesSalesRepCol join(CatSubCatPrdReqCol@ProductID == SalesSalesRepCol@ProductID,",
+				"     joinType:'inner',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> FinalJoin",
+				"FinalJoin select(mapColumn(",
+				"          TxnID = fSalesPrimaryKey,",
+				"          ProductID = CatSubCatPrdReqCol@ProductID,",
+				"          SalesRepID,",
+				"          SalesRepName,",
+				"          Category,",
+				"          SubCategoryName = {SubCategory Name},",
+				"          Color,",
+				"          ProductName,",
+				"          RetailPrice,",
+				"          StandardCost,",
+				"          Country,",
+				"          Town,",
+				"          Date,",
+				"          Units,",
+				"          PercentOfStandardCost,",
+				"          RevenueDiscount",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> FinalRequiredCol",
+				"FinalRequiredCol derive(Total_Revenue = RetailPrice * Units,",
+				"          Total_Cost = StandardCost * Units) ~> CalcTotalRevenueTotalCost",
+				"CalcTotalRevenueTotalCost derive(Gross_Profit = Total_Revenue - Total_Cost) ~> CalcGrossProfit",
+				"CalcGrossProfit aggregate(groupBy(SalesRepName),",
+				"     Total_Cost = sum(Total_Cost),",
+				"          Total_Revenue = sum(Total_Revenue),",
+				"          Gross_Profit = sum(Gross_Profit)) ~> SalesRepSummary",
+				"CalcGrossProfit aggregate(groupBy(ProductName),",
+				"     Gross_Profit = sum(Gross_Profit),",
+				"          Avg_Gross_Profit = avg(Gross_Profit)) ~> ProductSummary",
+				"CalcGrossProfit aggregate(groupBy(Country),",
+				"     Total_Cost = sum(Total_Cost),",
+				"          Total_Profit = sum(Gross_Profit)) ~> CountryWiseSummary",
+				"CalcGrossProfit aggregate(groupBy(Date),",
+				"     Avg_Sales_Per_Day = sum(Total_Revenue)) ~> AvgSalesPerDay",
+				"CalcGrossProfit sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     filePattern:'Denis_G.csv',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     partitionBy('hash', 1)) ~> sink1",
+				"CalcGrossProfit sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     partitionBy('hash', 1)) ~> sink2",
+				"SalesRepSummary sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink3",
+				"ProductSummary sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink4",
+				"CountryWiseSummary sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink5",
+				"AvgSalesPerDay sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError') ~> sink6"
+			]
+		}
+	}
+}

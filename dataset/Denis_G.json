@@ -1,5 +1,5 @@
 {
-	"name": "Geography_S",
+	"name": "Denis_G",
 	"properties": {
 		"linkedServiceName": {
 			"referenceName": "Adls2Adf_ls",
@@ -10,8 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "Geography_S.csv",
-				"folderPath": "medallion/Silver",
+				"folderPath": "medallion/Gold",
 				"fileSystem": "denis"
 			},
 			"columnDelimiter": ",",
