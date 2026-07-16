@@ -50,7 +50,7 @@
 - Azure Blob Storage
 - GitHub
 - Azure Mapping Data Flow
-- SQL
+- MySQL Database
 - MongoDB
 - Azure Key Vault
 - Execute Pipeline Activity
