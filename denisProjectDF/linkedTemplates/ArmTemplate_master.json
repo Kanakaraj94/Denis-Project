@@ -102,12 +102,6 @@
 					},
 					"Blob2Adf_ls_properties_typeProperties_connectionString_secretName": {
 						"value": "[parameters('Blob2Adf_ls_properties_typeProperties_connectionString_secretName')]"
-					},
-					"Mongo2Adf_ls_properties_typeProperties_connectionString_secretName": {
-						"value": "[parameters('Mongo2Adf_ls_properties_typeProperties_connectionString_secretName')]"
-					},
-					"Mongo2Adf_ls_properties_typeProperties_database": {
-						"value": "[parameters('Mongo2Adf_ls_properties_typeProperties_database')]"
 					}
 				}
 			},
@@ -126,6 +120,12 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"Mongo2Adf_ls_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('Mongo2Adf_ls_properties_typeProperties_connectionString_secretName')]"
+					},
+					"Mongo2Adf_ls_properties_typeProperties_database": {
+						"value": "[parameters('Mongo2Adf_ls_properties_typeProperties_database')]"
 					},
 					"MySql2Adf_ls_properties_typeProperties_server": {
 						"value": "[parameters('MySql2Adf_ls_properties_typeProperties_server')]"

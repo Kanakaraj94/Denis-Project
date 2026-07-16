@@ -13,6 +13,849 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Category_DF')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Category_B",
+								"type": "DatasetReference"
+							},
+							"name": "CategoryBronze"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Category_S",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "Category_SS",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						}
+					],
+					"transformations": [],
+					"scriptLines": [
+						"source(output(",
+						"          CategoryKey as short,",
+						"          Category as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> CategoryBronze",
+						"CategoryBronze sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     filePattern:'Category_S.csv',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1",
+						"CategoryBronze sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Denis_DF')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Category_S",
+								"type": "DatasetReference"
+							},
+							"name": "CategoryData"
+						},
+						{
+							"dataset": {
+								"referenceName": "SubCategory_S",
+								"type": "DatasetReference"
+							},
+							"name": "SubCategoryData"
+						},
+						{
+							"dataset": {
+								"referenceName": "Product_S",
+								"type": "DatasetReference"
+							},
+							"name": "ProductData"
+						},
+						{
+							"dataset": {
+								"referenceName": "SalesRep_S",
+								"type": "DatasetReference"
+							},
+							"name": "SalesRepData"
+						},
+						{
+							"dataset": {
+								"referenceName": "Sales_S",
+								"type": "DatasetReference"
+							},
+							"name": "SalesData"
+						},
+						{
+							"dataset": {
+								"referenceName": "Geography_S",
+								"type": "DatasetReference"
+							},
+							"name": "GeographyData"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Denis_G",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "Denis_GG",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						},
+						{
+							"dataset": {
+								"referenceName": "SalesRepSummary",
+								"type": "DatasetReference"
+							},
+							"name": "sink3"
+						},
+						{
+							"dataset": {
+								"referenceName": "ProductSummary",
+								"type": "DatasetReference"
+							},
+							"name": "sink4"
+						},
+						{
+							"dataset": {
+								"referenceName": "CountrySummary",
+								"type": "DatasetReference"
+							},
+							"name": "sink5"
+						},
+						{
+							"dataset": {
+								"referenceName": "AvgSalesPerDay",
+								"type": "DatasetReference"
+							},
+							"name": "sink6"
+						}
+					],
+					"transformations": [
+						{
+							"name": "CategorySubCatJoin"
+						},
+						{
+							"name": "CatSubCatReqClms"
+						},
+						{
+							"name": "CatSubCatProduct"
+						},
+						{
+							"name": "CatSubCatPrdReqCol"
+						},
+						{
+							"name": "SalesSalesRepJoin"
+						},
+						{
+							"name": "SalesSalesRepCol"
+						},
+						{
+							"name": "FinalJoin"
+						},
+						{
+							"name": "FinalRequiredCol"
+						},
+						{
+							"name": "CalcTotalRevenueTotalCost"
+						},
+						{
+							"name": "CalcGrossProfit"
+						},
+						{
+							"name": "SalesRepSummary"
+						},
+						{
+							"name": "ProductSummary"
+						},
+						{
+							"name": "CountryWiseSummary"
+						},
+						{
+							"name": "AvgSalesPerDay"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          CategoryKey as short,",
+						"          Category as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> CategoryData",
+						"source(output(",
+						"          SubCategoryKey as short,",
+						"          CategoryKey as short,",
+						"          {SubCategory Name} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> SubCategoryData",
+						"source(output(",
+						"          ProductID as short,",
+						"          SubCategoryKey as short,",
+						"          Color as string,",
+						"          ProductName as string,",
+						"          RetailPrice as double,",
+						"          StandardCost as double",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> ProductData",
+						"source(output(",
+						"          SalesRepID as short,",
+						"          SalesRepName as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> SalesRepData",
+						"source(output(",
+						"          fSalesPrimaryKey as integer,",
+						"          ProductID as short,",
+						"          SalesRepID as short,",
+						"          Country as string,",
+						"          Town as string,",
+						"          Date as date,",
+						"          Units as short,",
+						"          PercentOfStandardCost as double,",
+						"          RevenueDiscount as double",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> SalesData",
+						"source(output(",
+						"          GeoKey as short,",
+						"          Country as string,",
+						"          Town as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> GeographyData",
+						"CategoryData, SubCategoryData join(CategoryData@CategoryKey == SubCategoryData@CategoryKey,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> CategorySubCatJoin",
+						"CategorySubCatJoin select(mapColumn(",
+						"          SubCategoryKey,",
+						"          Category,",
+						"          SubCategoryName = {SubCategory Name}",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> CatSubCatReqClms",
+						"CatSubCatReqClms, ProductData join(CatSubCatReqClms@SubCategoryKey == ProductData@SubCategoryKey,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> CatSubCatProduct",
+						"CatSubCatProduct select(mapColumn(",
+						"          ProductID,",
+						"          Category,",
+						"          {SubCategory Name} = SubCategoryName,",
+						"          Color,",
+						"          ProductName,",
+						"          RetailPrice,",
+						"          StandardCost",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> CatSubCatPrdReqCol",
+						"SalesRepData, SalesData join(SalesRepData@SalesRepID == SalesData@SalesRepID,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> SalesSalesRepJoin",
+						"SalesSalesRepJoin select(mapColumn(",
+						"          fSalesPrimaryKey,",
+						"          ProductID,",
+						"          SalesRepID = SalesData@SalesRepID,",
+						"          SalesRepName,",
+						"          Country,",
+						"          Town,",
+						"          Date,",
+						"          Units,",
+						"          PercentOfStandardCost,",
+						"          RevenueDiscount",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SalesSalesRepCol",
+						"CatSubCatPrdReqCol, SalesSalesRepCol join(CatSubCatPrdReqCol@ProductID == SalesSalesRepCol@ProductID,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> FinalJoin",
+						"FinalJoin select(mapColumn(",
+						"          TxnID = fSalesPrimaryKey,",
+						"          ProductID = CatSubCatPrdReqCol@ProductID,",
+						"          SalesRepID,",
+						"          SalesRepName,",
+						"          Category,",
+						"          SubCategoryName = {SubCategory Name},",
+						"          Color,",
+						"          ProductName,",
+						"          RetailPrice,",
+						"          StandardCost,",
+						"          Country,",
+						"          Town,",
+						"          Date,",
+						"          Units,",
+						"          PercentOfStandardCost,",
+						"          RevenueDiscount",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> FinalRequiredCol",
+						"FinalRequiredCol derive(Total_Revenue = RetailPrice * Units,",
+						"          Total_Cost = StandardCost * Units) ~> CalcTotalRevenueTotalCost",
+						"CalcTotalRevenueTotalCost derive(Gross_Profit = Total_Revenue - Total_Cost) ~> CalcGrossProfit",
+						"CalcGrossProfit aggregate(groupBy(SalesRepName),",
+						"     Total_Cost = sum(Total_Cost),",
+						"          Total_Revenue = sum(Total_Revenue),",
+						"          Gross_Profit = sum(Gross_Profit)) ~> SalesRepSummary",
+						"CalcGrossProfit aggregate(groupBy(ProductName),",
+						"     Gross_Profit = sum(Gross_Profit),",
+						"          Avg_Gross_Profit = avg(Gross_Profit)) ~> ProductSummary",
+						"CalcGrossProfit aggregate(groupBy(Country),",
+						"     Total_Cost = sum(Total_Cost),",
+						"          Total_Profit = sum(Gross_Profit)) ~> CountryWiseSummary",
+						"CalcGrossProfit aggregate(groupBy(Date),",
+						"     Avg_Sales_Per_Day = sum(Total_Revenue)) ~> AvgSalesPerDay",
+						"CalcGrossProfit sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     filePattern:'Denis_G.csv',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1",
+						"CalcGrossProfit sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     partitionBy('hash', 1)) ~> sink2",
+						"SalesRepSummary sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink3",
+						"ProductSummary sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink4",
+						"CountryWiseSummary sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink5",
+						"AvgSalesPerDay sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink6"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Geography_DF')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Geography_B",
+								"type": "DatasetReference"
+							},
+							"name": "GeographyBronze"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Geography_S",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "Geography_SS",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						}
+					],
+					"transformations": [
+						{
+							"name": "selectedColumns"
+						},
+						{
+							"name": "AddingSurrogateKey"
+						},
+						{
+							"name": "selectedColumns1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          Country as string,",
+						"          Town as string,",
+						"          Wikipedia as string,",
+						"          {_id} as ({$oid} as string)",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false,",
+						"     documentForm: 'documentPerLine') ~> GeographyBronze",
+						"GeographyBronze select(mapColumn(",
+						"          Country,",
+						"          Town",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectedColumns",
+						"selectedColumns keyGenerate(output(GeoKey as long),",
+						"     startAt: 1L,",
+						"     stepValue: 1L) ~> AddingSurrogateKey",
+						"AddingSurrogateKey select(mapColumn(",
+						"          GeoKey,",
+						"          Country,",
+						"          Town",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectedColumns1",
+						"selectedColumns1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     filePattern:'Geography_S.csv',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1",
+						"selectedColumns1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Product_DF')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Product_B",
+								"type": "DatasetReference"
+							},
+							"name": "ProductBronze"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Product_S",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						},
+						{
+							"dataset": {
+								"referenceName": "Product_SS",
+								"type": "DatasetReference"
+							},
+							"name": "sink3"
+						}
+					],
+					"transformations": [
+						{
+							"name": "RowNumber"
+						},
+						{
+							"name": "filterUniqueID"
+						},
+						{
+							"name": "selectedClms"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          ProductID as short,",
+						"          {Sub Category Key} as short,",
+						"          Color as string,",
+						"          ProductName as string,",
+						"          RetailPrice as double,",
+						"          StandardCost as double",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> ProductBronze",
+						"ProductBronze window(over(ProductID),",
+						"     asc(ProductID, true),",
+						"     RowNum = rowNumber()) ~> RowNumber",
+						"RowNumber filter(RowNum == 1) ~> filterUniqueID",
+						"filterUniqueID select(mapColumn(",
+						"          ProductID,",
+						"          SubCategoryKey = {Sub Category Key},",
+						"          Color,",
+						"          ProductName,",
+						"          RetailPrice,",
+						"          StandardCost",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectedClms",
+						"selectedClms sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     filePattern:'Product_S.csv',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink2",
+						"selectedClms sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink3"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SalesRep_DF')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "SalesRep_B",
+								"type": "DatasetReference"
+							},
+							"name": "SalesRepBronzeData"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SalesRep_S",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "SalesRep_SS",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						}
+					],
+					"transformations": [
+						{
+							"name": "SalesRepIDFormat"
+						},
+						{
+							"name": "selectedColumns"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          SalesRepID as string,",
+						"          {Sales Rep Name} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> SalesRepBronzeData",
+						"SalesRepBronzeData derive(SalesRepID = regexReplace(SalesRepID, '[^0-9]', '')) ~> SalesRepIDFormat",
+						"SalesRepIDFormat select(mapColumn(",
+						"          SalesRepID,",
+						"          SalesRepName = {Sales Rep Name}",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectedColumns",
+						"selectedColumns sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     filePattern:'SalesRep_S.csv',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1",
+						"selectedColumns sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Sales_DF')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "AdlsFactFiles_B",
+								"type": "DatasetReference"
+							},
+							"name": "AllSalesBronze"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Sales_S",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "Sales_SS",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						},
+						{
+							"name": "selectedColumns"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          fSalesPrimaryKey as integer,",
+						"          ProductID as short,",
+						"          SalesRepID as short,",
+						"          Location as string,",
+						"          Date as string,",
+						"          Units as short,",
+						"          PercentOfStandardCost as double,",
+						"          RevenueDiscount as double",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> AllSalesBronze",
+						"AllSalesBronze derive(Country = split(Location,';')[1],",
+						"          Town = split(Location, ';')[2],",
+						"          Date = toDate(Date, 'dd.MM.yyyy')) ~> derivedColumn1",
+						"derivedColumn1 select(mapColumn(",
+						"          fSalesPrimaryKey,",
+						"          ProductID,",
+						"          SalesRepID,",
+						"          Country,",
+						"          Town,",
+						"          Date,",
+						"          Units,",
+						"          PercentOfStandardCost,",
+						"          RevenueDiscount",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> selectedColumns",
+						"selectedColumns sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     filePattern:'Sales_S.csv',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1",
+						"selectedColumns sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SubCategory_DF')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "SubCategory_B",
+								"type": "DatasetReference"
+							},
+							"name": "SubCategoryBronze"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "SubCategory_S",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "SubCategory_SS",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						}
+					],
+					"transformations": [
+						{
+							"name": "derivedColumn1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          SubCategoryKey as string,",
+						"          CategoryKey as string,",
+						"          {SubCategory Name} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> SubCategoryBronze",
+						"SubCategoryBronze derive(CategoryKey = regexReplace(CategoryKey, '[^0-9]', '')) ~> derivedColumn1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     filePattern:'SubCategory_S.csv',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1",
+						"derivedColumn1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Bronze2Silver_PL')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -241,7 +1084,14 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/SalesRep_DF')]",
+				"[concat(variables('factoryId'), '/dataflows/Product_DF')]",
+				"[concat(variables('factoryId'), '/dataflows/Category_DF')]",
+				"[concat(variables('factoryId'), '/dataflows/Geography_DF')]",
+				"[concat(variables('factoryId'), '/dataflows/SubCategory_DF')]",
+				"[concat(variables('factoryId'), '/dataflows/Sales_DF')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Raw2Bronze_PL')]",
@@ -324,6 +1174,62 @@
 				"annotations": []
 			},
 			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Silver2Gold_PL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Denis_DF",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"CategoryData": {},
+									"SubCategoryData": {},
+									"ProductData": {},
+									"SalesRepData": {},
+									"SalesData": {},
+									"GeographyData": {},
+									"sink1": {},
+									"sink2": {},
+									"sink3": {},
+									"sink4": {},
+									"sink5": {},
+									"sink6": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/Denis_DF')]"
+			]
 		}
 	]
 }

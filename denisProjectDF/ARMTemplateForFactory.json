@@ -671,6 +671,62 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Silver2Gold_PL')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Data flow1",
+						"type": "ExecuteDataFlow",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"dataflow": {
+								"referenceName": "Denis_DF",
+								"type": "DataFlowReference",
+								"parameters": {},
+								"datasetParameters": {
+									"CategoryData": {},
+									"SubCategoryData": {},
+									"ProductData": {},
+									"SalesRepData": {},
+									"SalesData": {},
+									"GeographyData": {},
+									"sink1": {},
+									"sink2": {},
+									"sink3": {},
+									"sink4": {},
+									"sink5": {},
+									"sink6": {}
+								}
+							},
+							"staging": {},
+							"compute": {
+								"coreCount": 8,
+								"computeType": "General"
+							},
+							"traceLevel": "Fine"
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/Denis_DF')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/AdlsFactFiles_B')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -757,6 +813,27 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/linkedServices/Adls2Adf_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AvgSalesPerDay')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Adf2AzSQL_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "",
+					"table": "AvgSalesPerDay_Tb"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Adf2AzSQL_ls')]"
 			]
 		},
 		{
@@ -871,6 +948,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": "Category_S.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -900,6 +978,76 @@
 				"typeProperties": {
 					"schema": "",
 					"table": "Category_Norm_Tb"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Adf2AzSQL_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/CountrySummary')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Adf2AzSQL_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "",
+					"table": "CountrySummary_Tb"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Adf2AzSQL_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Denis_G')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Adls2Adf_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"folderPath": "medallion/Gold",
+						"fileSystem": "denis"
+					},
+					"columnDelimiter": ",",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Adls2Adf_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Denis_GG')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Adf2AzSQL_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "",
+					"table": "Denis_DeNorm_Tb"
 				}
 			},
 			"dependsOn": [
@@ -965,6 +1113,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": "Geography_S.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -994,6 +1143,27 @@
 				"typeProperties": {
 					"schema": "",
 					"table": "Geography_Norm_Tb"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Adf2AzSQL_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/ProductSummary')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Adf2AzSQL_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "",
+					"table": "ProductSummary_Tb"
 				}
 			},
 			"dependsOn": [
@@ -1063,6 +1233,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": "Product_S.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -1092,6 +1263,27 @@
 				"typeProperties": {
 					"schema": "",
 					"table": "Product_Norm_Tb"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/Adf2AzSQL_ls')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/SalesRepSummary')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "Adf2AzSQL_ls",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [],
+				"typeProperties": {
+					"schema": "",
+					"table": "SalesRepSummary_Tb"
 				}
 			},
 			"dependsOn": [
@@ -1150,6 +1342,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": "SalesRep_S.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -1199,6 +1392,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
+						"fileName": "Sales_S.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -1290,7 +1484,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "SubCategory.csv",
+						"fileName": "SubCategory_S.csv",
 						"folderPath": "medallion/Silver",
 						"fileSystem": "denis"
 					},
@@ -1545,6 +1739,366 @@
 				"[concat(variables('factoryId'), '/datasets/Category_B')]",
 				"[concat(variables('factoryId'), '/datasets/Category_S')]",
 				"[concat(variables('factoryId'), '/datasets/Category_SS')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Denis_DF')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "Category_S",
+								"type": "DatasetReference"
+							},
+							"name": "CategoryData"
+						},
+						{
+							"dataset": {
+								"referenceName": "SubCategory_S",
+								"type": "DatasetReference"
+							},
+							"name": "SubCategoryData"
+						},
+						{
+							"dataset": {
+								"referenceName": "Product_S",
+								"type": "DatasetReference"
+							},
+							"name": "ProductData"
+						},
+						{
+							"dataset": {
+								"referenceName": "SalesRep_S",
+								"type": "DatasetReference"
+							},
+							"name": "SalesRepData"
+						},
+						{
+							"dataset": {
+								"referenceName": "Sales_S",
+								"type": "DatasetReference"
+							},
+							"name": "SalesData"
+						},
+						{
+							"dataset": {
+								"referenceName": "Geography_S",
+								"type": "DatasetReference"
+							},
+							"name": "GeographyData"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "Denis_G",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						},
+						{
+							"dataset": {
+								"referenceName": "Denis_GG",
+								"type": "DatasetReference"
+							},
+							"name": "sink2"
+						},
+						{
+							"dataset": {
+								"referenceName": "SalesRepSummary",
+								"type": "DatasetReference"
+							},
+							"name": "sink3"
+						},
+						{
+							"dataset": {
+								"referenceName": "ProductSummary",
+								"type": "DatasetReference"
+							},
+							"name": "sink4"
+						},
+						{
+							"dataset": {
+								"referenceName": "CountrySummary",
+								"type": "DatasetReference"
+							},
+							"name": "sink5"
+						},
+						{
+							"dataset": {
+								"referenceName": "AvgSalesPerDay",
+								"type": "DatasetReference"
+							},
+							"name": "sink6"
+						}
+					],
+					"transformations": [
+						{
+							"name": "CategorySubCatJoin"
+						},
+						{
+							"name": "CatSubCatReqClms"
+						},
+						{
+							"name": "CatSubCatProduct"
+						},
+						{
+							"name": "CatSubCatPrdReqCol"
+						},
+						{
+							"name": "SalesSalesRepJoin"
+						},
+						{
+							"name": "SalesSalesRepCol"
+						},
+						{
+							"name": "FinalJoin"
+						},
+						{
+							"name": "FinalRequiredCol"
+						},
+						{
+							"name": "CalcTotalRevenueTotalCost"
+						},
+						{
+							"name": "CalcGrossProfit"
+						},
+						{
+							"name": "SalesRepSummary"
+						},
+						{
+							"name": "ProductSummary"
+						},
+						{
+							"name": "CountryWiseSummary"
+						},
+						{
+							"name": "AvgSalesPerDay"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          CategoryKey as short,",
+						"          Category as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> CategoryData",
+						"source(output(",
+						"          SubCategoryKey as short,",
+						"          CategoryKey as short,",
+						"          {SubCategory Name} as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> SubCategoryData",
+						"source(output(",
+						"          ProductID as short,",
+						"          SubCategoryKey as short,",
+						"          Color as string,",
+						"          ProductName as string,",
+						"          RetailPrice as double,",
+						"          StandardCost as double",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> ProductData",
+						"source(output(",
+						"          SalesRepID as short,",
+						"          SalesRepName as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> SalesRepData",
+						"source(output(",
+						"          fSalesPrimaryKey as integer,",
+						"          ProductID as short,",
+						"          SalesRepID as short,",
+						"          Country as string,",
+						"          Town as string,",
+						"          Date as date,",
+						"          Units as short,",
+						"          PercentOfStandardCost as double,",
+						"          RevenueDiscount as double",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> SalesData",
+						"source(output(",
+						"          GeoKey as short,",
+						"          Country as string,",
+						"          Town as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> GeographyData",
+						"CategoryData, SubCategoryData join(CategoryData@CategoryKey == SubCategoryData@CategoryKey,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> CategorySubCatJoin",
+						"CategorySubCatJoin select(mapColumn(",
+						"          SubCategoryKey,",
+						"          Category,",
+						"          SubCategoryName = {SubCategory Name}",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> CatSubCatReqClms",
+						"CatSubCatReqClms, ProductData join(CatSubCatReqClms@SubCategoryKey == ProductData@SubCategoryKey,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> CatSubCatProduct",
+						"CatSubCatProduct select(mapColumn(",
+						"          ProductID,",
+						"          Category,",
+						"          {SubCategory Name} = SubCategoryName,",
+						"          Color,",
+						"          ProductName,",
+						"          RetailPrice,",
+						"          StandardCost",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> CatSubCatPrdReqCol",
+						"SalesRepData, SalesData join(SalesRepData@SalesRepID == SalesData@SalesRepID,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> SalesSalesRepJoin",
+						"SalesSalesRepJoin select(mapColumn(",
+						"          fSalesPrimaryKey,",
+						"          ProductID,",
+						"          SalesRepID = SalesData@SalesRepID,",
+						"          SalesRepName,",
+						"          Country,",
+						"          Town,",
+						"          Date,",
+						"          Units,",
+						"          PercentOfStandardCost,",
+						"          RevenueDiscount",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> SalesSalesRepCol",
+						"CatSubCatPrdReqCol, SalesSalesRepCol join(CatSubCatPrdReqCol@ProductID == SalesSalesRepCol@ProductID,",
+						"     joinType:'inner',",
+						"     matchType:'exact',",
+						"     ignoreSpaces: false,",
+						"     broadcast: 'auto')~> FinalJoin",
+						"FinalJoin select(mapColumn(",
+						"          TxnID = fSalesPrimaryKey,",
+						"          ProductID = CatSubCatPrdReqCol@ProductID,",
+						"          SalesRepID,",
+						"          SalesRepName,",
+						"          Category,",
+						"          SubCategoryName = {SubCategory Name},",
+						"          Color,",
+						"          ProductName,",
+						"          RetailPrice,",
+						"          StandardCost,",
+						"          Country,",
+						"          Town,",
+						"          Date,",
+						"          Units,",
+						"          PercentOfStandardCost,",
+						"          RevenueDiscount",
+						"     ),",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true) ~> FinalRequiredCol",
+						"FinalRequiredCol derive(Total_Revenue = RetailPrice * Units,",
+						"          Total_Cost = StandardCost * Units) ~> CalcTotalRevenueTotalCost",
+						"CalcTotalRevenueTotalCost derive(Gross_Profit = Total_Revenue - Total_Cost) ~> CalcGrossProfit",
+						"CalcGrossProfit aggregate(groupBy(SalesRepName),",
+						"     Total_Cost = sum(Total_Cost),",
+						"          Total_Revenue = sum(Total_Revenue),",
+						"          Gross_Profit = sum(Gross_Profit)) ~> SalesRepSummary",
+						"CalcGrossProfit aggregate(groupBy(ProductName),",
+						"     Gross_Profit = sum(Gross_Profit),",
+						"          Avg_Gross_Profit = avg(Gross_Profit)) ~> ProductSummary",
+						"CalcGrossProfit aggregate(groupBy(Country),",
+						"     Total_Cost = sum(Total_Cost),",
+						"          Total_Profit = sum(Gross_Profit)) ~> CountryWiseSummary",
+						"CalcGrossProfit aggregate(groupBy(Date),",
+						"     Avg_Sales_Per_Day = sum(Total_Revenue)) ~> AvgSalesPerDay",
+						"CalcGrossProfit sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     filePattern:'Denis_G.csv',",
+						"     umask: 0022,",
+						"     preCommands: [],",
+						"     postCommands: [],",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     partitionBy('hash', 1)) ~> sink1",
+						"CalcGrossProfit sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     partitionBy('hash', 1)) ~> sink2",
+						"SalesRepSummary sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink3",
+						"ProductSummary sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink4",
+						"CountryWiseSummary sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink5",
+						"AvgSalesPerDay sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink6"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/Category_S')]",
+				"[concat(variables('factoryId'), '/datasets/SubCategory_S')]",
+				"[concat(variables('factoryId'), '/datasets/Product_S')]",
+				"[concat(variables('factoryId'), '/datasets/SalesRep_S')]",
+				"[concat(variables('factoryId'), '/datasets/Sales_S')]",
+				"[concat(variables('factoryId'), '/datasets/Geography_S')]",
+				"[concat(variables('factoryId'), '/datasets/Denis_G')]",
+				"[concat(variables('factoryId'), '/datasets/Denis_GG')]",
+				"[concat(variables('factoryId'), '/datasets/SalesRepSummary')]",
+				"[concat(variables('factoryId'), '/datasets/ProductSummary')]",
+				"[concat(variables('factoryId'), '/datasets/CountrySummary')]",
+				"[concat(variables('factoryId'), '/datasets/AvgSalesPerDay')]"
 			]
 		},
 		{
