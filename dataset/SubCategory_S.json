@@ -10,7 +10,7 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "SubCategory.csv",
+				"fileName": "SubCategory_S.csv",
 				"folderPath": "medallion/Silver",
 				"fileSystem": "denis"
 			},
