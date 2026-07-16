@@ -223,7 +223,8 @@
 						"fileName": "Categories.xlsx",
 						"folderPath": "medallion/Bronze",
 						"fileSystem": "denis"
-					}
+					},
+					"firstRowAsHeader": true
 				},
 				"schema": [
 					{
